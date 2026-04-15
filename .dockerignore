@@ -5,5 +5,3 @@ CLAUDE.md
 .claude/
 .git/
 *.log
-client/src
-server/tests
