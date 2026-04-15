@@ -1,10 +1,12 @@
 import 'dotenv/config';
 import http from 'http';
+import path from 'path';
 import express from 'express';
 import { initSchema } from './db';
 import { attachWebSocketServer } from './wsServer';
 
 const PORT = parseInt(process.env.PORT ?? '3001', 10);
+const IS_PROD = process.env.NODE_ENV === 'production';
 
 const app = express();
 
@@ -13,6 +15,15 @@ app.use(express.json());
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok' });
 });
+
+if (IS_PROD) {
+  const staticDir = path.join(__dirname, '..', 'public');
+  app.use(express.static(staticDir));
+  // SPA fallback — let React Router handle client-side routes
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(staticDir, 'index.html'));
+  });
+}
 
 const server = http.createServer(app);
 

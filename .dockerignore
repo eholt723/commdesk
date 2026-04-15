@@ -1,0 +1,9 @@
+**/node_modules
+**/dist
+**/.env
+CLAUDE.md
+.claude/
+.git/
+*.log
+client/src
+server/tests
