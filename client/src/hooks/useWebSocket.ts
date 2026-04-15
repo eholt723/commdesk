@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
-import {
+import type {
   ServerMessage,
   OperationEvent,
   ConnectedUser,

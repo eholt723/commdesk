@@ -1,4 +1,4 @@
-import { ConnectedUser } from '../types';
+import type { ConnectedUser } from '../types';
 
 interface Props {
   presence: ConnectedUser[];

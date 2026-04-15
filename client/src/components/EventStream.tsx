@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { OperationEvent, EventStatus } from '../types';
+import type { OperationEvent, EventStatus } from '../types';
 
 const FLASH_DURATION_MS = 2000;
 

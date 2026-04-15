@@ -1,4 +1,4 @@
-import { HealthStats } from '../types';
+import type { HealthStats } from '../types';
 
 interface Props {
   health: HealthStats;
