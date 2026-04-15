@@ -33,6 +33,7 @@ export interface ConnectedUser {
 export type ServerMessageType =
   | 'init'
   | 'event'
+  | 'event_update'
   | 'presence_update'
   | 'health_update';
 
@@ -58,9 +59,16 @@ export interface HealthUpdateMessage {
   health: HealthStats;
 }
 
+export interface EventUpdateMessage {
+  type: 'event_update';
+  id: string;
+  status: Exclude<EventStatus, 'processing'>;
+}
+
 export type ServerMessage =
   | InitMessage
   | EventMessage
+  | EventUpdateMessage
   | PresenceUpdateMessage
   | HealthUpdateMessage;
 

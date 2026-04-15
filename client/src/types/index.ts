@@ -52,8 +52,15 @@ export interface HealthUpdateMessage {
   health: HealthStats;
 }
 
+export interface EventUpdateMessage {
+  type: 'event_update';
+  id: string;
+  status: Exclude<EventStatus, 'processing'>;
+}
+
 export type ServerMessage =
   | InitMessage
   | EventMessage
+  | EventUpdateMessage
   | PresenceUpdateMessage
   | HealthUpdateMessage;

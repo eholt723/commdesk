@@ -66,6 +66,12 @@ export function useWebSocket(): DashboardState {
           });
           break;
 
+        case 'event_update':
+          setEvents((prev) =>
+            prev.map((e) => (e.id === msg.id ? { ...e, status: msg.status } : e))
+          );
+          break;
+
         case 'presence_update':
           setPresence(msg.presence);
           break;

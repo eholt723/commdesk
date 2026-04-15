@@ -1,7 +1,7 @@
 import { neon } from '@neondatabase/serverless';
 import { OperationEvent } from './types';
 
-const sql = neon(process.env.DATABASE_URL!);
+export const sql = neon(process.env.DATABASE_URL!);
 
 export async function initSchema(): Promise<void> {
   await sql`

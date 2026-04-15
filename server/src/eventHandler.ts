@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { EventType, EventStatus, OperationEvent } from './types';
-import { persistEvent } from './db';
+import { persistEvent, sql } from './db';
 import { broadcast } from './broadcastManager';
 
 const EVENT_TYPES: EventType[] = [
@@ -58,6 +58,24 @@ export function incrementConnections(_delta: number): void {
   // placeholder — health panel gets activeConnections from broadcastManager
 }
 
+const RESOLVE_DELAY_MS = 4000; // how long a processing event stays pending
+
+function scheduleResolution(eventId: string): void {
+  setTimeout(async () => {
+    const resolved: 'success' | 'error' = Math.random() < 0.8 ? 'success' : 'error';
+    if (resolved === 'error') errorCount++;
+
+    broadcast({ type: 'event_update', id: eventId, status: resolved });
+
+    // Update the persisted record so replayed history reflects final status
+    try {
+      await sql`UPDATE events SET status = ${resolved} WHERE id = ${eventId}`;
+    } catch {
+      // non-fatal — UI already updated via broadcast
+    }
+  }, RESOLVE_DELAY_MS);
+}
+
 export async function fireEvent(requestedType?: EventType): Promise<OperationEvent> {
   const type = requestedType ?? EVENT_TYPES[Math.floor(Math.random() * EVENT_TYPES.length)];
   const status = randomStatus();
@@ -76,6 +94,8 @@ export async function fireEvent(requestedType?: EventType): Promise<OperationEve
   await persistEvent(event);
 
   broadcast({ type: 'event', event });
+
+  if (status === 'processing') scheduleResolution(event.id);
 
   return event;
 }
