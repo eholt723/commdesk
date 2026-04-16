@@ -1,12 +1,12 @@
-// Tests must import after resetting module state — use jest.isolateModules or re-import each suite.
-// Since presenceTracker holds module-level state, we reload it between tests.
+// presenceTracker holds module-level state, so we reload it between tests
+// to guarantee a clean slate for each case.
 
 describe('presenceTracker', () => {
-  let tracker: typeof import('../src/presenceTracker');
+  let tracker: typeof import('../../src/presenceTracker');
 
   beforeEach(async () => {
     jest.resetModules();
-    tracker = await import('../src/presenceTracker');
+    tracker = await import('../../src/presenceTracker');
   });
 
   test('addClient returns a ConnectedUser with expected shape', () => {
@@ -51,7 +51,7 @@ describe('presenceTracker', () => {
     expect(presence[0].clientId).toBe('c2');
   });
 
-  test('getPresence returns empty array when no clients', () => {
+  test('getPresence returns empty array when no clients connected', () => {
     expect(tracker.getPresence()).toEqual([]);
   });
 });

@@ -86,8 +86,8 @@ commdesk/
 │              wsServer.ts                │
 │  on connect → addClient + sendTo(init)  │
 │  on message → fireEvent()               │
-│  on close   → removeClient             │
-└────────┬──────────────┬────────────────┘
+│  on close   → removeClient              │
+└────────┬──────────────┬─────────────────┘
          │              │
          ▼              ▼
 ┌─────────────┐  ┌──────────────────┐

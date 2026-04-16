@@ -1,7 +1,7 @@
 import { WebSocket } from 'ws';
-import { EventMessage } from '../src/types';
+import { EventMessage } from '../../src/types';
 
-// Mock ws module so we don't need a real server
+// Mock ws so we don't need a real server
 jest.mock('ws', () => {
   const actual = jest.requireActual('ws') as { WebSocket: typeof WebSocket };
   return {
@@ -21,11 +21,11 @@ jest.mock('ws', () => {
 });
 
 describe('broadcastManager', () => {
-  let manager: typeof import('../src/broadcastManager');
+  let manager: typeof import('../../src/broadcastManager');
 
   beforeEach(async () => {
     jest.resetModules();
-    manager = await import('../src/broadcastManager');
+    manager = await import('../../src/broadcastManager');
   });
 
   function makeMockWs(): WebSocket & { sent: string[] } {
