@@ -9,6 +9,8 @@ pinned: false
 
 # CommDesk
 
+[![CI / Deploy](https://github.com/eholt723/commdesk/actions/workflows/ci.yml/badge.svg)](https://github.com/eholt723/commdesk/actions/workflows/ci.yml)
+
 A multi-user real-time operations dashboard. Multiple users connect to a shared live view and see the same data simultaneously — events broadcast to all connected clients instantly via WebSocket. Think mini mission control for a business process.
 
 **Demo:** open two browser windows side by side, fire an event in one, and watch both update simultaneously with presence chips and flash animations.

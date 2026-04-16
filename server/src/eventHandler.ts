@@ -12,9 +12,8 @@ const EVENT_TYPES: EventType[] = [
 ];
 
 const STATUS_WEIGHTS: { status: EventStatus; weight: number }[] = [
-  { status: 'success', weight: 0.7 },
+  { status: 'success', weight: 0.8 },
   { status: 'processing', weight: 0.2 },
-  { status: 'error', weight: 0.1 },
 ];
 
 function randomStatus(): EventStatus {
@@ -62,16 +61,12 @@ const RESOLVE_DELAY_MS = 4000; // how long a processing event stays pending
 
 function scheduleResolution(eventId: string): void {
   setTimeout(async () => {
-    const resolved: 'success' | 'error' = Math.random() < 0.8 ? 'success' : 'error';
-    if (resolved === 'error') errorCount++;
-
-    broadcast({ type: 'event_update', id: eventId, status: resolved });
-
-    // Update the persisted record so replayed history reflects final status
     try {
-      await sql`UPDATE events SET status = ${resolved} WHERE id = ${eventId}`;
+      await sql`UPDATE events SET status = 'success' WHERE id = ${eventId}`;
+      broadcast({ type: 'event_update', id: eventId, status: 'success' });
     } catch {
-      // non-fatal — UI already updated via broadcast
+      errorCount++;
+      broadcast({ type: 'event_update', id: eventId, status: 'error' });
     }
   }, RESOLVE_DELAY_MS);
 }
@@ -89,9 +84,15 @@ export async function fireEvent(requestedType?: EventType): Promise<OperationEve
   };
 
   eventsProcessed++;
-  if (status === 'error') errorCount++;
 
-  await persistEvent(event);
+  try {
+    await persistEvent(event);
+  } catch {
+    errorCount++;
+    event.status = 'error';
+    broadcast({ type: 'event', event });
+    return event;
+  }
 
   broadcast({ type: 'event', event });
 
