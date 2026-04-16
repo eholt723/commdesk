@@ -18,11 +18,14 @@ A multi-user real-time operations dashboard. Multiple users connect to a shared 
 ## Features
 
 - **Live event stream** — incoming events displayed with type, status, and timestamp
+- **Event resolution** — events start as `processing` and resolve to `success` or `error` after ~4 seconds
 - **Presence indicators** — avatar chips (initials + color) update live as users connect and disconnect
-- **System health panel** — real-time counters for events processed, active connections, and error rate
+- **System health panel** — real-time counters for events processed, active connections, and error rate (real DB failures only)
 - **Event generator** — fire simulated business events (order received, payment processed, support ticket, shipment, refund) without external integrations
 - **Flash animations** — green/yellow/red card flash on new events, clears after 2 seconds
 - **Event replay** — new clients receive the last 50 events on connect
+- **Dark/light mode** — toggle persists via localStorage
+- **About page** — explains architecture, use cases, and tech stack
 
 ## Tech Stack
 
@@ -52,8 +55,12 @@ commdesk/
 │   │   ├── db.ts               # Neon PostgreSQL client; initSchema, persistEvent, getRecentEvents
 │   │   └── types.ts            # All TypeScript interfaces: events, presence, WS message payloads
 │   ├── tests/
-│   │   ├── broadcastManager.test.ts
-│   │   └── presenceTracker.test.ts
+│   │   ├── unit/
+│   │   │   ├── broadcastManager.test.ts
+│   │   │   ├── presenceTracker.test.ts
+│   │   │   └── eventHandler.test.ts
+│   │   └── integration/
+│   │       └── db.test.ts               # Runs against a live Neon database
 │   ├── package.json
 │   └── tsconfig.json
 ├── client/
@@ -66,6 +73,8 @@ commdesk/
 │   │   │   ├── EventStream.tsx          # Scrolling event feed with 2s flash animation
 │   │   │   ├── HealthPanel.tsx          # Three stat cards: events, connections, error rate
 │   │   │   └── EventGenerator.tsx       # Fire Event button; disabled when disconnected
+│   │   ├── pages/
+│   │   │   └── About.tsx                # Architecture overview, use cases, tech stack
 │   │   └── types/
 │   │       └── index.ts                 # Client-side mirror of server types
 │   ├── package.json
@@ -126,6 +135,22 @@ cd client
 npm install
 npm run dev            # Vite on port 5173, proxies /ws → 3001
 ```
+
+## Testing
+
+Tests are split into unit and integration suites:
+
+```bash
+cd server
+npm run test:unit         # jest --testPathPattern=tests/unit
+npm run test:integration  # jest --testPathPattern=tests/integration
+npm test                  # all tests
+```
+
+- **Unit tests** — `broadcastManager`, `presenceTracker`, `eventHandler` tested with mocked dependencies
+- **Integration tests** — `db.test.ts` runs against a live Neon database; requires `DATABASE_URL` in the environment
+
+CI runs `npm test` (all suites) on every push and pull request to `main`.
 
 ## Deployment
 
