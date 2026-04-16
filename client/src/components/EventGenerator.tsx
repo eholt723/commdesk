@@ -20,15 +20,8 @@ export function EventGenerator({ onFire, disabled = false }: Props) {
       onClick={handleFire}
       disabled={disabled || firing}
       className={`
-        px-6 py-3 rounded-xl font-semibold text-sm tracking-wide
-        transition-all duration-200 shadow-lg
-        ${
-          disabled
-            ? 'bg-slate-700 text-slate-500 cursor-not-allowed'
-            : firing
-            ? 'bg-indigo-400 text-white scale-95'
-            : 'bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white cursor-pointer'
-        }
+        bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors
+        ${disabled || firing ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
       `}
     >
       {firing ? 'Firing...' : 'Fire Event'}

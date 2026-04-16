@@ -12,8 +12,8 @@ interface StatCardProps {
 
 function StatCard({ label, value, accent = 'text-white' }: StatCardProps) {
   return (
-    <div className="bg-slate-800/60 rounded-xl px-5 py-4 flex flex-col gap-1">
-      <span className="text-slate-400 text-xs uppercase tracking-widest">{label}</span>
+    <div className="bg-white dark:bg-slate-800/60 rounded-xl px-5 py-4 flex flex-col gap-1 shadow-sm dark:shadow-none">
+      <span className="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-widest">{label}</span>
       <span className={`text-2xl font-bold tabular-nums ${accent}`}>{value}</span>
     </div>
   );

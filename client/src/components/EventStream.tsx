@@ -10,9 +10,9 @@ const STATUS_COLORS: Record<EventStatus, string> = {
 };
 
 const FLASH_BG: Record<EventStatus, string> = {
-  success: 'bg-emerald-900/40',
-  error: 'bg-red-900/40',
-  processing: 'bg-yellow-900/40',
+  success: 'bg-emerald-100 dark:bg-emerald-900/40',
+  error: 'bg-red-100 dark:bg-red-900/40',
+  processing: 'bg-yellow-100 dark:bg-yellow-900/40',
 };
 
 const EVENT_LABELS: Record<string, string> = {
@@ -59,7 +59,7 @@ export function EventStream({ events }: Props) {
   return (
     <div className="flex flex-col gap-1 overflow-y-auto max-h-[480px] pr-1">
       {events.length === 0 && (
-        <p className="text-slate-500 text-sm py-4 text-center">
+        <p className="text-slate-400 dark:text-slate-500 text-sm py-4 text-center">
           No events yet. Fire one to get started.
         </p>
       )}
@@ -69,7 +69,7 @@ export function EventStream({ events }: Props) {
           <div
             key={event.id}
             className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors duration-300 ${
-              flashing ? FLASH_BG[event.status] : 'bg-slate-800/50'
+              flashing ? FLASH_BG[event.status] : 'bg-slate-100 dark:bg-slate-800/50'
             }`}
           >
             <span
@@ -81,13 +81,13 @@ export function EventStream({ events }: Props) {
                   : 'bg-yellow-400'
               }`}
             />
-            <span className="text-slate-300 flex-1 truncate">
+            <span className="text-slate-700 dark:text-slate-300 flex-1 truncate">
               {EVENT_LABELS[event.type] ?? event.type}
             </span>
             <span className={`font-medium ${STATUS_COLORS[event.status]}`}>
               {event.status}
             </span>
-            <span className="text-slate-500 text-xs flex-shrink-0">
+            <span className="text-slate-400 dark:text-slate-500 text-xs flex-shrink-0">
               {new Date(event.timestamp).toLocaleTimeString()}
             </span>
           </div>
