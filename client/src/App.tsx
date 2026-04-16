@@ -51,7 +51,7 @@ function Dashboard() {
       {/* Event generator */}
       <div className="flex flex-col items-center gap-2">
         <p className="text-xs text-slate-400 dark:text-slate-500">
-          Open this page in a second tab or window — events you fire will appear on both screens instantly.
+          Open this page in a second tab, window or machine - events you fire will appear on both screens instantly.
         </p>
         <EventGenerator onFire={fireEvent} disabled={status !== 'connected'} />
       </div>
