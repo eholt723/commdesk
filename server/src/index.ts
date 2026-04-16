@@ -3,6 +3,7 @@ import http from 'http';
 import path from 'path';
 import express from 'express';
 import { initSchema } from './db';
+import { initEventStats } from './eventHandler';
 import { attachWebSocketServer } from './wsServer';
 
 const PORT = parseInt(process.env.PORT ?? '3001', 10);
@@ -31,6 +32,7 @@ attachWebSocketServer(server);
 
 async function start(): Promise<void> {
   await initSchema();
+  await initEventStats();
   console.log('[db] schema ready');
 
   server.listen(PORT, () => {

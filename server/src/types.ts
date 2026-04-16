@@ -87,6 +87,7 @@ export type ClientMessage = FireEventMessage;
 
 export interface HealthStats {
   eventsProcessed: number;
+  totalEvents: number;
   activeConnections: number;
   errorRate: number; // 0–1
 }

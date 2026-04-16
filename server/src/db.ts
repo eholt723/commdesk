@@ -29,6 +29,11 @@ export async function persistEvent(event: OperationEvent): Promise<void> {
   `;
 }
 
+export async function getTotalEventCount(): Promise<number> {
+  const rows = await sql`SELECT COUNT(*)::int AS count FROM events`;
+  return (rows[0]?.count as number) ?? 0;
+}
+
 export async function getRecentEvents(limit = 50): Promise<OperationEvent[]> {
   const rows = await sql`
     SELECT id, type, status, payload, timestamp

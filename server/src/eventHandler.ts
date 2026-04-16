@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { EventType, EventStatus, OperationEvent } from './types';
-import { persistEvent, sql } from './db';
+import { persistEvent, getTotalEventCount, sql } from './db';
 import { broadcast } from './broadcastManager';
 
 const EVENT_TYPES: EventType[] = [
@@ -43,11 +43,17 @@ function buildPayload(type: EventType): Record<string, unknown> {
 
 // Running totals for health stats
 let eventsProcessed = 0;
+let totalEvents = 0;
 let errorCount = 0;
+
+export async function initEventStats(): Promise<void> {
+  totalEvents = await getTotalEventCount();
+}
 
 export function getHealthStats() {
   return {
     eventsProcessed,
+    totalEvents,
     activeConnections: 0, // injected by wsServer
     errorRate: eventsProcessed === 0 ? 0 : +(errorCount / eventsProcessed).toFixed(3),
   };
@@ -84,6 +90,7 @@ export async function fireEvent(requestedType?: EventType): Promise<OperationEve
   };
 
   eventsProcessed++;
+  totalEvents++;
 
   try {
     await persistEvent(event);

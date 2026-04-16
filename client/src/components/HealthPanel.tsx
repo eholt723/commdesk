@@ -29,8 +29,9 @@ export function HealthPanel({ health }: Props) {
       : 'text-emerald-400';
 
   return (
-    <div className="grid grid-cols-3 gap-3">
-      <StatCard label="Events Processed" value={health.eventsProcessed} accent="text-indigo-300" />
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <StatCard label="Total Events" value={health.totalEvents} accent="text-cyan-300" />
+      <StatCard label="This Session" value={health.eventsProcessed} accent="text-indigo-300" />
       <StatCard label="Active Connections" value={health.activeConnections} accent="text-sky-300" />
       <StatCard label="Error Rate" value={`${errorPct}%`} accent={errorAccent} />
     </div>

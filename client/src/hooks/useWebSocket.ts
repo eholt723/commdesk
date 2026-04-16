@@ -32,6 +32,7 @@ export function useWebSocket(): DashboardState {
   const [presence, setPresence] = useState<ConnectedUser[]>([]);
   const [health, setHealth] = useState<HealthStats>({
     eventsProcessed: 0,
+    totalEvents: 0,
     activeConnections: 0,
     errorRate: 0,
   });

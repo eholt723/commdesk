@@ -26,6 +26,7 @@ export interface ConnectedUser {
 
 export interface HealthStats {
   eventsProcessed: number;
+  totalEvents: number;
   activeConnections: number;
   errorRate: number;
 }
